@@ -1,12 +1,12 @@
-# Prometheus
+# Prometheus Exporters
 
-Set up common prometheus configurations
+Set up common prometheus exporter configurations
 
 ## Install to requirements.yml
 
 ```
-- src: git+git@github.com:smartlogic/ansible-role-prometheus
-  name: prometheus
+- src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
+  name: prometheus-exporters
   version: 0.1.0
 ```
 
@@ -38,12 +38,8 @@ GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
 
 ## Role Variables
 
-- `prometheus_version` - Which version of prometheus to download
-- `prometheus_checksum` - The checksum for the version of prometheus
 - `node_exporter_version` - Which version of node exporter to download
 - `node_exporter_checksum` - The checksum for the version of node exporter
-- `alertmanager_version` - Which version of alertmanager to download
-- `alertmanager_checksum` - The checksum for the version of alertmanager
 - `redis_exporter_version` - Which version of redis_exporter to download
 - `redis_exporter_checksum` - The checksum for the version of redis_exporter
 - `postgres_exporter_version` - Which version of postgres_exporter to download
@@ -54,46 +50,12 @@ GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
   - Default: `disable` - because the default is socket connection
 - `postgres_exporter_connection_user` -
   - Default: `prometheus` - the connecting user (uses identity be default)
-- `grafana_ini_file` - The file to use for `grafana.ini`
-  - Default: `grafana.ini`
-- `prometheus_config_file` - The file to use for `prometheus.yml`
-  - Default: `prometheus.yml`
-- `prometheus_alert_file` - The file to use for `alertmanager.yml`
-  - Default: `alertmanager.yml`
-- `alertmanager_enabled` - boolean - True for enabling the alertmanager, via systemctl
-  - Default: `true`
-- `prometheus` - Configure scrape files, alert rules, and alert templates
 
 ## Dependencies
 
 None
 
-## Example Configuration
-
-```yaml
-grafana_ini_file: "{{ playbook_dir }}/files/grafana.ini"
-prometheus_config_file: "{{ playbook_dir }}/files/prometheus.yml"
-prometheus_alert_file: "{{ playbook_dir }}/files/alertmanager.yml"
-
-prometheus:
-  jobs:
-    - "{{ playbook_dir }}/file_config/project.json"
-  alert:
-    rules:
-      - "{{ playbook_dir }}/alert_rules/rules.yml"
-    templates:
-      - "{{ playbook_dir }}/alert_templates/templte.tmpl"
-```
-
 ## Example Playbook
-
-Full setup:
-
-```yaml
-- hosts: servers
-  roles:
-    - { role: prometheus, action: "full" }
-```
 
 Node exporter only:
 
