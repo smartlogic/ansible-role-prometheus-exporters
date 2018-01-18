@@ -1,0 +1,65 @@
+- name: "Create version folder"
+  file:
+    path: "/home/prometheus/alertmanager/{{ alertmanager_version }}"
+    state: directory
+    mode: 0700
+  become: yes
+  become_user: prometheus
+
+- name: "Download the alertmanager file"
+  get_url:
+    url: "https://github.com/prometheus/alertmanager/releases/download/v{{ alertmanager_version }}/alertmanager-{{ alertmanager_version }}.linux-amd64.tar.gz"
+    dest: "/home/prometheus/alertmanager/{{ alertmanager_version }}/alertmanager.tar.gz"
+    mode: 0400
+    checksum: "sha256:{{ alertmanager_checksum }}"
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/alertmanager/{{ alertmanager_version }}/alertmanager-{{ alertmanager_version }}.linux-amd64"
+  register: alertmanager_extracted_folder_stat
+
+- name: stat final folder
+  stat: path="/home/prometheus/alertmanager/{{ alertmanager_version }}/alertmanager"
+  register: alertmanager_folder_stat
+
+- name: "Extract archive"
+  unarchive:
+    src: "/home/prometheus/alertmanager/{{ alertmanager_version }}/alertmanager.tar.gz"
+    dest: "/home/prometheus/alertmanager/{{ alertmanager_version }}/"
+    remote_src: yes
+  when: alertmanager_extracted_folder_stat.stat.exists == False and alertmanager_folder_stat.stat.exists == False
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/alertmanager/{{ alertmanager_version }}/alertmanager-{{ alertmanager_version }}.linux-amd64"
+  register: alertmanager_extracted_folder_stat
+
+- name: Move extracted folder to standard path
+  command: mv /home/prometheus/alertmanager/{{ alertmanager_version }}/alertmanager-{{ alertmanager_version }}.linux-amd64 /home/prometheus/alertmanager/{{ alertmanager_version }}/alertmanager
+  when: alertmanager_extracted_folder_stat.stat.exists
+  become: yes
+  become_user: prometheus
+
+- name: Copy the config file
+  copy:
+    src: "{{ prometheus_alert_file }}"
+    dest: /home/prometheus/alertmanager.yml
+    mode: 0644
+  notify: restart alertmanager
+
+- name: Template out the service file
+  template:
+    src: alertmanager.service.j2
+    dest: /etc/systemd/system/alertmanager.service
+    mode: 0644
+  notify:
+    - reload systemd
+    - restart alertmanager
+
+- name: Enable alertmanager
+  systemd:
+    enabled: yes
+    name: alertmanager
+  when: alertmanager_enabled == True

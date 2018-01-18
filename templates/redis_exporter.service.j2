@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus Redis Exporter
+After=network-online.target
+
+[Service]
+User=prometheus
+Restart=on-failure
+WorkingDirectory=/home/prometheus/redis_exporter/{{ redis_exporter_version }}
+ExecStart=/home/prometheus/redis_exporter/{{ redis_exporter_version }}/redis_exporter
+
+[Install]
+WantedBy=multi-user.target

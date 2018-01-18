@@ -1,0 +1,15 @@
+galaxy_info:
+  author: Eric Oestrich
+  description: Set up prometheus scraping on a server
+  company: SmartLogic
+  license: MIT
+  min_ansible_version: 2.1
+  platforms:
+    - name: Ubuntu
+      versions:
+        - xenial
+  galaxy_tags:
+    - metrics
+    - prometheus
+    - grafana
+dependencies: []

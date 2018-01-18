@@ -1,0 +1,13 @@
+[Unit]
+Description=Prometheus Postgres Exporter
+After=network-online.target
+
+[Service]
+EnvironmentFile=/home/prometheus/postgres_exporter/env
+User=prometheus
+Restart=on-failure
+WorkingDirectory=/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter
+ExecStart=/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter/postgres_exporter
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,128 @@
+- name: "Create the prometheus user"
+  user:
+    name: prometheus
+    comment: "Prometheus"
+
+- name: "Create version folder"
+  file:
+    path: "/home/prometheus/{{ prometheus_version }}"
+    state: directory
+    mode: 0700
+  become: yes
+  become_user: prometheus
+
+- name: "Create data folder"
+  file:
+    path: "/home/prometheus/data"
+    state: directory
+    mode: 0700
+  become: yes
+  become_user: prometheus
+
+- name: "Download the prometheus file"
+  get_url:
+    url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+    dest: "/home/prometheus/{{ prometheus_version }}/prometheus.tar.gz"
+    mode: 0400
+    checksum: "sha256:{{ prometheus_checksum }}"
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64"
+  register: prometheus_extracted_folder_stat
+
+- name: stat final folder
+  stat: path="/home/prometheus/{{ prometheus_version }}/prometheus"
+  register: prometheus_folder_stat
+
+- name: "Extract archive"
+  unarchive:
+    src: "/home/prometheus/{{ prometheus_version }}/prometheus.tar.gz"
+    dest: "/home/prometheus/{{ prometheus_version }}/"
+    remote_src: yes
+  when: prometheus_extracted_folder_stat.stat.exists == False and prometheus_folder_stat.stat.exists == False
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64"
+  register: prometheus_extracted_folder_stat
+
+- name: Move extracted folder to standard path
+  command: mv /home/prometheus/{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64 /home/prometheus/{{ prometheus_version }}/prometheus
+  when: prometheus_extracted_folder_stat.stat.exists
+
+- name: Copy prometheus.yml
+  copy:
+    src: "{{ prometheus_config_file }}"
+    dest: /home/prometheus/prometheus.yml
+    mode: 0600
+  notify: restart prometheus
+  become: true
+  become_user: prometheus
+
+- name: "Create file config folder"
+  file:
+    path: "/home/prometheus/file_configs"
+    state: directory
+    mode: 0770
+  become: yes
+  become_user: prometheus
+
+- name: "Create template folder"
+  file:
+    path: "/home/prometheus/alert_templates"
+    state: directory
+    mode: 0770
+  become: yes
+  become_user: prometheus
+
+- name: "Create rule config folder"
+  file:
+    path: "/home/prometheus/rule_files"
+    state: directory
+    mode: 0770
+  become: yes
+  become_user: prometheus
+
+- name: Template out the service file
+  template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+    mode: 0644
+  notify:
+    - reload systemd
+    - restart prometheus
+
+- name: Enable prometheus
+  systemd:
+    enabled: yes
+    name: prometheus
+
+- name: Create scrape files
+  copy:
+    src: "{{ item }}"
+    dest: "/home/prometheus/file_configs/"
+    mode: 0600
+  become: true
+  become_user: prometheus
+  with_items: "{{ prometheus.jobs }}"
+
+- name: Create rules files
+  copy:
+    src: "{{ item }}"
+    dest: "/home/prometheus/rule_files/"
+    mode: 0600
+  become: true
+  become_user: prometheus
+  with_items: "{{ prometheus.alert.rules }}"
+
+- name: Create template files
+  copy:
+    src: "{{ item }}"
+    dest: "/home/prometheus/alert_templates"
+    mode: 0600
+  become: true
+  become_user: prometheus
+  with_items: "{{ prometheus.alert.templates }}"

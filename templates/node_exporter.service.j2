@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus Node Exporter
+After=network-online.target
+
+[Service]
+User=prometheus
+Restart=on-failure
+WorkingDirectory=/home/prometheus/node_exporter/{{ node_exporter_version }}/node_exporter
+ExecStart=/home/prometheus/node_exporter/{{ node_exporter_version }}/node_exporter/node_exporter
+
+[Install]
+WantedBy=multi-user.target

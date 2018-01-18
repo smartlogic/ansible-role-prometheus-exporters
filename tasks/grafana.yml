@@ -1,0 +1,33 @@
+- name: Set up apt repo for grafana
+  apt_repository:
+    repo: deb https://packagecloud.io/grafana/stable/debian/ jessie main
+    state: present
+
+- name: Add apt-key
+  apt_key:
+    url: https://packagecloud.io/gpg.key
+    state: present
+
+- name: Install grafana
+  apt:
+    name: grafana
+    update_cache: yes
+
+- name: Install sqlite3
+  apt:
+    name: sqlite3
+    update_cache: yes
+
+- name: Copy out the grafana config
+  copy:
+    src: "{{ grafana_ini_file }}"
+    dest: /etc/grafana/grafana.ini
+    mode: 0640
+  notify:
+    - reload systemd
+    - restart grafana
+
+- name: Enable grafana
+  systemd:
+    enabled: yes
+    name: grafana-server

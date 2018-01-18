@@ -1,0 +1,31 @@
+global:
+  smtp_smarthost: 'smtp.mailgun.org:587'
+  smtp_from: ''
+  smtp_auth_username: ''
+  smtp_auth_password: ''
+  slack_api_url: ''
+
+route:
+  group_by: ['alertname', 'client']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: slack
+
+  routes:
+  - match:
+      severity: critical
+    receiver: slack
+
+inhibit_rules:
+- source_match:
+    severity: 'critical'
+  target_match:
+    severity: 'warning'
+  equal: ['alertname', 'client']
+
+receivers:
+- name: 'slack'
+
+templates:
+- '/home/prometheus/alert_templates/*.tmpl'
