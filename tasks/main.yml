@@ -1,8 +1,8 @@
 - import_tasks: node_exporter.yml
-  when: action == "node_exporter"
+  when: '"node_exporter" in actions'
 
 - import_tasks: redis_exporter.yml
-  when: action == "redis_exporter"
+  when: '"redis_exporter" in actions'
 
 - import_tasks: postgres_exporter.yml
-  when: action == "postgres_exporter"
+  when: '"postgres_exporter" in actions'
