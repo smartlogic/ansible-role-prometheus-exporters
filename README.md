@@ -62,7 +62,7 @@ Node exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, action: "node_exporter" }
+    - { role: prometheus, actions: ["node_exporter"] }
 ```
 
 Redis exporter only:
@@ -70,7 +70,7 @@ Redis exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, action: "redis_exporter" }
+    - { role: prometheus, actions: ["redis_exporter"] }
 ```
 
 Postgres exporter only:
@@ -78,7 +78,7 @@ Postgres exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, action: "postgres_exporter" }
+    - { role: prometheus, actions: ["postgres_exporter"] }
 ```
 
 ## License
