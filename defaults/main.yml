@@ -1,9 +1,9 @@
 ---
-node_exporter_version: 0.15.1
-node_exporter_checksum: 7ffb3773abb71dd2b2119c5f6a7a0dbca0cff34b24b2ced9e01d9897df61a127
+node_exporter_version: 0.15.2
+node_exporter_checksum: 1ce667467e442d1f7fbfa7de29a8ffc3a7a0c84d24d7c695cc88b29e0752df37
 
-redis_exporter_version: 0.14
-redis_exporter_checksum: ba80d6902a7020ca94156741cb1d6e44480d19bfa753315d5e6b0f099921bce0
+redis_exporter_version: 0.15.0
+redis_exporter_checksum: 170458f8c9e1588861b1584451cfc636b1339b4cf495f82396f03e474d6e626f
 
 postgres_exporter_version: 0.4.1
 postgres_exporter_checksum: 219c2c116cb496d54ddbd23f392a38c3496ab8e7118dfbf8b7c0b21593dedbfd
