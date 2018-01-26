@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 0.1.0
+  version: 0.3.0
 ```
 
 ## Requirements
@@ -50,6 +50,8 @@ GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
   - Default: `disable` - because the default is socket connection
 - `postgres_exporter_connection_user` -
   - Default: `prometheus` - the connecting user (uses identity be default)
+- `blackbox_exporter_version` - Which version of blackbox_exporter to download
+- `blackbox_exporter_checksum` - The checksum for the version of blackbox_exporter
 
 ## Dependencies
 
@@ -79,6 +81,14 @@ Postgres exporter only:
 - hosts: servers
   roles:
     - { role: prometheus, actions: ["postgres_exporter"] }
+```
+
+Blackbox exporter only:
+
+```yaml
+- hosts: servers
+  roles:
+    - { role: prometheus, actions: ["blackbox_exporter"] }
 ```
 
 ## License

@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus Blackbox Exporter
+After=network-online.target
+
+[Service]
+User=prometheus
+Restart=on-failure
+WorkingDirectory=/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter
+ExecStart=/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter/blackbox_exporter
+
+[Install]
+WantedBy=multi-user.target
