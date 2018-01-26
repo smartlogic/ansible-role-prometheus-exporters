@@ -20,3 +20,9 @@
     name: postgres_exporter
     state: restarted
   become: true
+
+- name: restart blackbox_exporter
+  service:
+    name: blackbox_exporter
+    state: restarted
+  become: true

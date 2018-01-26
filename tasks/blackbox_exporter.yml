@@ -1,0 +1,78 @@
+- name: "Create the prometheus user"
+  user:
+    name: prometheus
+    comment: "Prometheus"
+  become: true
+
+- name: "Create version folder"
+  file:
+    path: "/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}"
+    state: directory
+    mode: 0700
+  become: yes
+  become_user: prometheus
+
+- name: "Download the blackbox_exporter file"
+  get_url:
+    url: "https://github.com/prometheus/blackbox_exporter/releases/download/v{{ blackbox_exporter_version }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter.tar.gz"
+    mode: 0400
+    checksum: "sha256:{{ blackbox_exporter_checksum }}"
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/blackbox_exporter/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64"
+  register: blackbox_exporter_extracted_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: stat final folder
+  stat: path="/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter"
+  register: blackbox_exporter_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: "Extract archive"
+  unarchive:
+    src: "/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter.tar.gz"
+    dest: "/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/"
+    remote_src: yes
+  when: blackbox_exporter_extracted_folder_stat.stat.exists == False and blackbox_exporter_folder_stat.stat.exists == False
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64"
+  register: blackbox_exporter_extracted_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: Move extracted folder to standard path
+  command: mv /home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64 /home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter
+  when: blackbox_exporter_extracted_folder_stat.stat.exists
+  become: yes
+  become_user: prometheus
+
+- name: Ensure that blackbox exporter can use kernel functions needed
+  capabilities:
+    path: /home/prometheus/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter/blackbox_exporter
+    capability: cap_net_raw+ep
+    state: present
+  become: yes
+
+- name: Template out the service file
+  template:
+    src: blackbox_exporter.service.j2
+    dest: /etc/systemd/system/blackbox_exporter.service
+    mode: 0644
+  become: yes
+  notify:
+    - reload systemd
+    - restart blackbox_exporter
+
+- name: Enable blackbox exporter
+  systemd:
+    enabled: yes
+    name: blackbox_exporter
+  become: yes
