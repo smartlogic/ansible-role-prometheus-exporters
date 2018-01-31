@@ -22,7 +22,7 @@
   become_user: prometheus
 
 - name: stat extracted folder
-  stat: path="/home/node_exporter/node_exporter/{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64"
+  stat: path="/home/prometheus/node_exporter/{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64"
   register: node_exporter_extracted_folder_stat
   become: yes
   become_user: prometheus
