@@ -36,6 +36,18 @@ CREATE VIEW prometheus.pg_stat_replication AS
 GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
 ```
 
+### Firewall Ports
+
+These ports should be opened to the prometheus server based on the enabled exporters:
+
+| Exporter   | Port  |
+| ---------- | ----- |
+| node       | 9100  |
+| statsd     | 9102  |
+| blackbox   | 9115  |
+| redis      | 9121  |
+| postgres   | 9187  |
+
 ## Role Variables
 
 - `node_exporter_version` - Which version of node exporter to download
