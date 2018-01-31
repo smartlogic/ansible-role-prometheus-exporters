@@ -1,0 +1,76 @@
+- name: "Create the prometheus user"
+  user:
+    name: prometheus
+    comment: "Prometheus"
+  become: true
+
+- name: "Create version folder"
+  file:
+    path: "/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}"
+    state: directory
+    mode: 0700
+  become: yes
+  become_user: prometheus
+
+- name: "Download the statsd_exporter file"
+  get_url:
+    url: "https://github.com/prometheus/statsd_exporter/releases/download/v{{ statsd_exporter_version }}/statsd_exporter-{{ statsd_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter.tar.gz"
+    mode: 0400
+    checksum: "sha256:{{ statsd_exporter_checksum }}"
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter-{{ statsd_exporter_version }}.linux-amd64"
+  register: statsd_exporter_extracted_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: stat final folder
+  stat: path="/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter"
+  register: statsd_exporter_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: "Extract archive"
+  unarchive:
+    src: "/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter.tar.gz"
+    dest: "/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/"
+    remote_src: yes
+  when: statsd_exporter_extracted_folder_stat.stat.exists == False and statsd_exporter_folder_stat.stat.exists == False
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter-{{ statsd_exporter_version }}.linux-amd64"
+  register: statsd_exporter_extracted_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: Move extracted folder to standard path
+  command: mv /home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter-{{ statsd_exporter_version }}.linux-amd64 /home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter
+  when: statsd_exporter_extracted_folder_stat.stat.exists
+  become: yes
+  become_user: prometheus
+
+- name: Copy statsd_mapping_file
+  copy:
+    src: "{{ statsd_mapping_file }}"
+    dest: /home/prometheus/statsd_exporter/mapping.yml
+
+- name: Template out the service file
+  template:
+    src: statsd_exporter.service.j2
+    dest: /etc/systemd/system/statsd_exporter.service
+    mode: 0644
+  become: yes
+  notify:
+    - reload systemd
+    - restart statsd_exporter
+
+- name: Enable statsd exporter
+  systemd:
+    enabled: yes
+    name: statsd_exporter
+  become: yes

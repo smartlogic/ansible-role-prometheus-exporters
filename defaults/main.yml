@@ -14,3 +14,7 @@ postgres_exporter_connection_dbname: postgres
 
 blackbox_exporter_version: 0.11.0
 blackbox_exporter_checksum: 6731efeb27d667ff5da362cc1afbb0a983d016697d906bb4b9c5503699efcbb7
+
+statsd_exporter_version: 0.6.0
+statsd_exporter_checksum: 8ac4013400026ed143aaddc495d19a2d6290f45bc8fdc85ad9970d3e45adaeb2
+statsd_mapping_file: statsd_mapping.yml

@@ -26,3 +26,9 @@
     name: blackbox_exporter
     state: restarted
   become: true
+
+- name: restart statsd_exporter
+  service:
+    name: statsd_exporter
+    state: restarted
+  become: true

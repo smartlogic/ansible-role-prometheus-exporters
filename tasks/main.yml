@@ -9,3 +9,6 @@
 
 - import_tasks: blackbox_exporter.yml
   when: '"blackbox_exporter" in actions'
+
+- import_tasks: statsd_exporter.yml
+  when: '"statsd_exporter" in actions'
