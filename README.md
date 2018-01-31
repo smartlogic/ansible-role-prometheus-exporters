@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 0.3.0
+  version: 0.4.0
 ```
 
 ## Requirements
@@ -36,6 +36,18 @@ CREATE VIEW prometheus.pg_stat_replication AS
 GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
 ```
 
+### Firewall Ports
+
+These ports should be opened to the prometheus server based on the enabled exporters:
+
+| Exporter   | Port  |
+| ---------- | ----- |
+| node       | 9100  |
+| statsd     | 9102  |
+| blackbox   | 9115  |
+| redis      | 9121  |
+| postgres   | 9187  |
+
 ## Role Variables
 
 - `node_exporter_version` - Which version of node exporter to download
@@ -52,10 +64,22 @@ GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
   - Default: `prometheus` - the connecting user (uses identity be default)
 - `blackbox_exporter_version` - Which version of blackbox_exporter to download
 - `blackbox_exporter_checksum` - The checksum for the version of blackbox_exporter
+- `statsd_exporter_version` - Which version of statsd_exporter to download
+- `statsd_exporter_checksum` - The checksum for the version of statsd_exporter
+- `statsd_mapping_file` - The file to use for statsd mapping to prometheus metrics
+  - Default: an empty mappings file
 
 ## Dependencies
 
 None
+
+## Example Configuration
+
+If using the statsd_exporter action:
+
+```yaml
+statsd_mapping_file: "{{ playbook_dir }}/files/statsd_mapping.yml"
+```
 
 ## Example Playbook
 
@@ -89,6 +113,14 @@ Blackbox exporter only:
 - hosts: servers
   roles:
     - { role: prometheus, actions: ["blackbox_exporter"] }
+```
+
+Statsd exporter only:
+
+```yaml
+- hosts: servers
+  roles:
+    - { role: prometheus, actions: ["statsd_exporter"] }
 ```
 
 ## License

@@ -22,7 +22,7 @@
   become_user: prometheus
 
 - name: stat extracted folder
-  stat: path="/home/postgres_exporter/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter_v{{ postgres_exporter_version }}_linux-amd64"
+  stat: path="/home/prometheus/postgres_exporter/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter_v{{ postgres_exporter_version }}_linux-amd64"
   register: postgres_exporter_extracted_folder_stat
   become: yes
   become_user: prometheus

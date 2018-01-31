@@ -22,7 +22,7 @@
   become_user: prometheus
 
 - name: stat extracted folder
-  stat: path="/home/blackbox_exporter/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64"
+  stat: path="/home/prometheus/blackbox_exporter/blackbox_exporter/{{ blackbox_exporter_version }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-amd64"
   register: blackbox_exporter_extracted_folder_stat
   become: yes
   become_user: prometheus
