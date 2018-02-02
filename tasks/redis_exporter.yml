@@ -1,9 +1,3 @@
-- name: "Create the prometheus user"
-  user:
-    name: prometheus
-    comment: "Prometheus"
-  become: true
-
 - name: "Create version folder"
   file:
     path: "/home/prometheus/redis_exporter/{{ redis_exporter_version }}"

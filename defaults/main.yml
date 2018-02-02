@@ -18,3 +18,6 @@ blackbox_exporter_checksum: 6731efeb27d667ff5da362cc1afbb0a983d016697d906bb4b9c5
 statsd_exporter_version: 0.6.0
 statsd_exporter_checksum: 8ac4013400026ed143aaddc495d19a2d6290f45bc8fdc85ad9970d3e45adaeb2
 statsd_mapping_file: statsd_mapping.yml
+
+elasticsearch_exporter_version: 1.0.2
+elasticsearch_exporter_checksum: 9f1a35e4acf93bc073ba0106578fa9762ed09af4e89485063ca3a93a9d0201b8

@@ -1,9 +1,3 @@
-- name: "Create the prometheus user"
-  user:
-    name: prometheus
-    comment: "Prometheus"
-  become: true
-
 - name: "Create version folder"
   file:
     path: "/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}"
