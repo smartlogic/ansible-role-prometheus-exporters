@@ -91,7 +91,7 @@ Node exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, actions: ["node_exporter"] }
+    - { role: prometheus-exporters, actions: ["node_exporter"] }
 ```
 
 Redis exporter only:
@@ -99,7 +99,7 @@ Redis exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, actions: ["redis_exporter"] }
+    - { role: prometheus-exporters, actions: ["redis_exporter"] }
 ```
 
 Postgres exporter only:
@@ -107,7 +107,7 @@ Postgres exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, actions: ["postgres_exporter"] }
+    - { role: prometheus-exporters, actions: ["postgres_exporter"] }
 ```
 
 Blackbox exporter only:
@@ -115,7 +115,7 @@ Blackbox exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, actions: ["blackbox_exporter"] }
+    - { role: prometheus-exporters, actions: ["blackbox_exporter"] }
 ```
 
 Statsd exporter only:
@@ -123,7 +123,7 @@ Statsd exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, actions: ["statsd_exporter"] }
+    - { role: prometheus-exporters, actions: ["statsd_exporter"] }
 ```
 
 Elasticsearch exporter only:
@@ -131,7 +131,7 @@ Elasticsearch exporter only:
 ```yaml
 - hosts: servers
   roles:
-    - { role: prometheus, actions: ["elasticsearch_exporter"] }
+    - { role: prometheus-exporters, actions: ["elasticsearch_exporter"] }
 ```
 
 ## License
