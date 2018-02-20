@@ -1,3 +1,9 @@
+- name: "Create the prometheus user"
+  user:
+    name: prometheus
+    comment: "Prometheus"
+  become: true
+
 - import_tasks: node_exporter.yml
   when: '"node_exporter" in actions'
 
@@ -12,3 +18,6 @@
 
 - import_tasks: statsd_exporter.yml
   when: '"statsd_exporter" in actions'
+
+- import_tasks: elasticsearch_exporter.yml
+  when: '"elasticsearch_exporter" in actions'

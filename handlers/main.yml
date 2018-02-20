@@ -32,3 +32,9 @@
     name: statsd_exporter
     state: restarted
   become: true
+
+- name: restart elasticsearch_exporter
+  service:
+    name: elasticsearch_exporter
+    state: restarted
+  become: true

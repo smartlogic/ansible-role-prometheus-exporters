@@ -1,0 +1,12 @@
+[Unit]
+Description=Prometheus Elasticsearch Exporter
+After=network-online.target
+
+[Service]
+User=prometheus
+Restart=on-failure
+WorkingDirectory=/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter
+ExecStart=/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter/elasticsearch_exporter -es.all
+
+[Install]
+WantedBy=multi-user.target

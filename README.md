@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 0.4.0
+  version: 0.5.0
 ```
 
 ## Requirements
@@ -40,13 +40,14 @@ GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
 
 These ports should be opened to the prometheus server based on the enabled exporters:
 
-| Exporter   | Port  |
-| ---------- | ----- |
-| node       | 9100  |
-| statsd     | 9102  |
-| blackbox   | 9115  |
-| redis      | 9121  |
-| postgres   | 9187  |
+| Exporter      | Port  |
+| ------------- | ----- |
+| node          | 9100  |
+| statsd        | 9102  |
+| elasticsearch | 9108  |
+| blackbox      | 9115  |
+| redis         | 9121  |
+| postgres      | 9187  |
 
 ## Role Variables
 
@@ -68,6 +69,8 @@ These ports should be opened to the prometheus server based on the enabled expor
 - `statsd_exporter_checksum` - The checksum for the version of statsd_exporter
 - `statsd_mapping_file` - The file to use for statsd mapping to prometheus metrics
   - Default: an empty mappings file
+- `elasticsearch_exporter_version` - Which version of elasticsearch_exporter to download
+- `elasticsearch_exporter_checksum` - The checksum for the version of elasticsearch_exporter
 
 ## Dependencies
 
@@ -121,6 +124,14 @@ Statsd exporter only:
 - hosts: servers
   roles:
     - { role: prometheus, actions: ["statsd_exporter"] }
+```
+
+Elasticsearch exporter only:
+
+```yaml
+- hosts: servers
+  roles:
+    - { role: prometheus, actions: ["elasticsearch_exporter"] }
 ```
 
 ## License
