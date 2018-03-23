@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 0.5.0
+  version: 0.5.1
 ```
 
 ## Requirements
@@ -55,6 +55,8 @@ These ports should be opened to the prometheus server based on the enabled expor
 - `node_exporter_checksum` - The checksum for the version of node exporter
 - `redis_exporter_version` - Which version of redis_exporter to download
 - `redis_exporter_checksum` - The checksum for the version of redis_exporter
+- `redis_addr` - The address of the redis instance to monitor
+  - Default: `redis://localhost:6379`
 - `postgres_exporter_version` - Which version of postgres_exporter to download
 - `postgres_exporter_checksum` - The checksum for the version of postgres_exporter
 - `postgres_exporter_connection_host` - The host to connect to

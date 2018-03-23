@@ -30,6 +30,14 @@
   become: yes
   become_user: prometheus
 
+- name: Template out the env file
+  template:
+    src: redis_exporter.env.j2
+    dest: /home/prometheus/redis_exporter/env
+    mode: 0644
+  become: yes
+  become_user: prometheus
+
 - name: Template out the service file
   template:
     src: redis_exporter.service.j2

@@ -5,6 +5,7 @@ After=network-online.target
 [Service]
 User=prometheus
 Restart=on-failure
+EnvironmentFile=/home/prometheus/redis_exporter/env
 WorkingDirectory=/home/prometheus/redis_exporter/{{ redis_exporter_version }}
 ExecStart=/home/prometheus/redis_exporter/{{ redis_exporter_version }}/redis_exporter
 
