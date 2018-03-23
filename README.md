@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 0.5.1
+  version: 0.5.2
 ```
 
 ## Requirements
@@ -65,6 +65,9 @@ These ports should be opened to the prometheus server based on the enabled expor
   - Default: `disable` - because the default is socket connection
 - `postgres_exporter_connection_user` -
   - Default: `prometheus` - the connecting user (uses identity be default)
+- `postgres_exporter_data_source_uri` - use URI style with username and password ommited, used in place of the previous options
+- `postgres_exporter_data_source_user` - use with URI style to specify the user
+- `postgres_exporter_data_source_pass` - use with URI style to specify the password
 - `blackbox_exporter_version` - Which version of blackbox_exporter to download
 - `blackbox_exporter_checksum` - The checksum for the version of blackbox_exporter
 - `statsd_exporter_version` - Which version of statsd_exporter to download
