@@ -18,6 +18,7 @@ Set up permission for the prometheus user (by default) to have access to the nec
 
 ```sql
 CREATE USER prometheus;
+CREATE DATABASE prometheus;
 ALTER USER prometheus SET SEARCH_PATH TO prometheus,pg_catalog;
 
 -- If deploying as non-superuser (for example in AWS RDS)
