@@ -13,6 +13,9 @@
 - import_tasks: postgres_exporter.yml
   when: '"postgres_exporter" in actions'
 
+- import_tasks: mysql_exporter.yml
+  when: '"mysql_exporter" in actions'
+
 - import_tasks: blackbox_exporter.yml
   when: '"blackbox_exporter" in actions'
 

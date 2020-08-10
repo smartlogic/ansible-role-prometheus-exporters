@@ -21,6 +21,12 @@
     state: restarted
   become: true
 
+- name: restart mysql_exporter
+  service:
+    name: mysql_exporter
+    state: restarted
+  become: true
+
 - name: restart blackbox_exporter
   service:
     name: blackbox_exporter

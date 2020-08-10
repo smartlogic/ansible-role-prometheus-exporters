@@ -1,0 +1,75 @@
+- name: "Create version folder"
+  file:
+    path: "/home/prometheus/mysql_exporter/{{ mysql_exporter_version }}"
+    state: directory
+    mode: 0700
+  become: yes
+  become_user: prometheus
+
+- name: "Download the mysql_exporter file"
+  get_url:
+    url: "https://github.com/prometheus/mysqld_exporter/releases/download/v{{ mysql_exporter_version }}/mysqld_exporter-{{ mysql_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/home/prometheus/mysql_exporter/{{ mysql_exporter_version }}/mysql_exporter.tar.gz"
+    mode: 0400
+    checksum: "sha256:{{ mysql_exporter_checksum }}"
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/mysql_exporter/{{ mysql_exporter_version }}/mysqld_exporter-{{ mysql_exporter_version }}.linux-amd64"
+  register: mysql_exporter_extracted_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: stat final folder
+  stat: path="/home/prometheus/mysql_exporter/{{ mysql_exporter_version }}/mysqld_exporter"
+  register: mysql_exporter_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: "Extract archive"
+  unarchive:
+    src: "/home/prometheus/mysql_exporter/{{ mysql_exporter_version }}/mysql_exporter.tar.gz"
+    dest: "/home/prometheus/mysql_exporter/{{ mysql_exporter_version }}/"
+    remote_src: yes
+  when: mysql_exporter_extracted_folder_stat.stat.exists == False and mysql_exporter_folder_stat.stat.exists == False
+  become: yes
+  become_user: prometheus
+
+- name: stat extracted folder
+  stat: path="/home/prometheus/mysql_exporter/{{ mysql_exporter_version }}/mysql_exporter-{{ mysql_exporter_version }}.linux-amd64"
+  register: mysql_exporter_extracted_folder_stat
+  become: yes
+  become_user: prometheus
+
+- name: Move extracted folder to standard path
+  command: mv /home/prometheus/mysql_exporter/{{ mysql_exporter_version }}/mysql_exporter-{{ mysql_exporter_version }}.linux-amd64 /home/prometheus/postgres_exporter/{{ mysql_exporter_version }}/mysqld_exporter
+  when: mysql_exporter_extracted_folder_stat.stat.exists
+  become: yes
+  become_user: prometheus
+
+- name: Template out the env file
+  template:
+    src: mysql_exporter.env.j2
+    dest: /home/prometheus/mysql_exporter/env
+    mode: 0644
+  become: yes
+  become_user: prometheus
+  notify:
+    - restart mysql_exporter
+
+- name: Template out the service file
+  template:
+    src: mysql_exporter.service.j2
+    dest: /etc/systemd/system/mysql_exporter.service
+    mode: 0644
+  become: yes
+  notify:
+    - reload systemd
+    - restart mysql_exporter
+
+- name: Enable mysql exporter
+  systemd:
+    enabled: yes
+    name: mysql_exporter
+  become: yes

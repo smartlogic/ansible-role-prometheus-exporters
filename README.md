@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 0.5.3
+  version: 0.6.0
 ```
 
 ## Requirements
@@ -37,6 +37,15 @@ CREATE VIEW prometheus.pg_stat_replication AS
 GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
 ```
 
+### For mysql_exporter
+
+Set up grants for a prometheus user (by default) to have access to the necessary stats
+
+```sql
+CREATE USER 'prometheus'@'localhost' IDENTIFIED BY 'SET_PASSWORD' WITH MAX_USER_CONNECTIONS 3;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'prometheus'@'localhost';
+```
+
 ### Firewall Ports
 
 These ports should be opened to the prometheus server based on the enabled exporters:
@@ -49,6 +58,7 @@ These ports should be opened to the prometheus server based on the enabled expor
 | blackbox      | 9115  |
 | redis         | 9121  |
 | postgres      | 9187  |
+| mysql         | 9104  |
 
 ## Role Variables
 
@@ -69,6 +79,17 @@ These ports should be opened to the prometheus server based on the enabled expor
 - `postgres_exporter_data_source_uri` - use URI style with username and password ommited, used in place of the previous options
 - `postgres_exporter_data_source_user` - use with URI style to specify the user
 - `postgres_exporter_data_source_pass` - use with URI style to specify the password
+- `mysql_exporter_version` - Which version of mysql_exporter to download
+- `mysql_exporter_checksum` - The checksum for the version of mysql_exporter
+- `mysql_exporter_connection_host` - The host to connect to
+  - Default: `/var/lib/mysql/mysql.sock` to use the default mysql socket
+- `mysql_exporter_connection_ssl_mode` - If to use ssl when connecting
+  - Default: `disable` - because the default is socket connection
+- `mysql_exporter_connection_user` -
+  - Default: `prometheus` - the connecting user (uses identity be default)
+- `mysql_exporter_data_source_uri` - use URI style with username and password ommited, used in place of the previous options
+- `mysql_exporter_data_source_user` - use with URI style to specify the user
+- `mysql_exporter_data_source_pass` - use with URI style to specify the password
 - `blackbox_exporter_version` - Which version of blackbox_exporter to download
 - `blackbox_exporter_checksum` - The checksum for the version of blackbox_exporter
 - `statsd_exporter_version` - Which version of statsd_exporter to download
@@ -114,6 +135,14 @@ Postgres exporter only:
 - hosts: servers
   roles:
     - { role: prometheus-exporters, actions: ["postgres_exporter"] }
+```
+
+MySQL exporter only:
+
+```yaml
+- hosts: servers
+  roles:
+    - { role: prometheus-exporters, actions: ["mysql_exporter"] }
 ```
 
 Blackbox exporter only:

@@ -13,6 +13,13 @@ postgres_exporter_connection_ssl_mode: disable
 postgres_exporter_connection_user: prometheus
 postgres_exporter_connection_dbname: postgres
 
+mysql_exporter_version: 0.12.1
+mysql_exporter_checksum: 133b0c281e5c6f8a34076b69ade64ab6cac7298507d35b96808234c4aa26b351
+mysql_exporter_connection_host: /var/lib/mysql/mysql.sock
+mysql_exporter_connection_ssl_mode: disable
+mysql_exporter_connection_user: prometheus
+mysql_exporter_connection_dbname: mysql
+
 blackbox_exporter_version: 0.11.0
 blackbox_exporter_checksum: 6731efeb27d667ff5da362cc1afbb0a983d016697d906bb4b9c5503699efcbb7
 
