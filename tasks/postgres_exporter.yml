@@ -53,8 +53,9 @@
     src: postgres_exporter.env.j2
     dest: /home/prometheus/postgres_exporter/env
     mode: 0644
+    owner: prometheus
+    group: prometheus
   become: yes
-  become_user: prometheus
   notify:
     - restart postgres_exporter
 
