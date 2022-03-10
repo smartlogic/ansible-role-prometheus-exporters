@@ -35,8 +35,9 @@
     src: redis_exporter.env.j2
     dest: /home/prometheus/redis_exporter/env
     mode: 0644
+    owner: prometheus
+    group: prometheus
   become: yes
-  become_user: prometheus
   notify:
     - restart redis_exporter
 
