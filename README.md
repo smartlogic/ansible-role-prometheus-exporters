@@ -7,34 +7,38 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 0.5.3
+  version: 1.0.0
 ```
 
 ## Requirements
 
 ### For postgres_exporter
 
-Set up permission for the prometheus user (by default) to have access to the necessary stats
+Set up permission for the postgres_exporter user (by default) to have access to the necessary stats, update the password to something more secure
 
 ```sql
-CREATE USER prometheus;
-CREATE DATABASE prometheus;
-ALTER USER prometheus SET SEARCH_PATH TO prometheus,pg_catalog;
+CREATE OR REPLACE FUNCTION __tmp_create_user() returns void as $$
+BEGIN
+  IF NOT EXISTS (
+          SELECT                       -- SELECT list can stay empty for this
+          FROM   pg_catalog.pg_user
+          WHERE  usename = 'postgres_exporter') THEN
+    CREATE USER postgres_exporter;
+  END IF;
+END;
+$$ language plpgsql;
 
--- If deploying as non-superuser (for example in AWS RDS)
--- GRANT prometheus TO :MASTER_USER;
-CREATE SCHEMA prometheus AUTHORIZATION prometheus;
+SELECT __tmp_create_user();
+DROP FUNCTION __tmp_create_user();
 
-CREATE VIEW prometheus.pg_stat_activity
-AS
-  SELECT * from pg_catalog.pg_stat_activity;
+ALTER USER postgres_exporter WITH PASSWORD '<set-a-password>';
+ALTER USER postgres_exporter SET SEARCH_PATH TO postgres_exporter,pg_catalog;
 
-GRANT SELECT ON prometheus.pg_stat_activity TO prometheus;
+-- If deploying as non-superuser (for example in AWS RDS), uncomment the GRANT
+-- line below and replace <MASTER_USER> with your root user.
+-- GRANT postgres_exporter TO <MASTER_USER>;
 
-CREATE VIEW prometheus.pg_stat_replication AS
-  SELECT * from pg_catalog.pg_stat_replication;
-
-GRANT SELECT ON prometheus.pg_stat_replication TO prometheus;
+GRANT CONNECT ON DATABASE postgres TO postgres_exporter;
 ```
 
 ### Firewall Ports

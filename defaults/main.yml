@@ -1,16 +1,16 @@
 ---
-node_exporter_version: 0.15.2
-node_exporter_checksum: 1ce667467e442d1f7fbfa7de29a8ffc3a7a0c84d24d7c695cc88b29e0752df37
+node_exporter_version: 1.5.0
+node_exporter_checksum: af999fd31ab54ed3a34b9f0b10c28e9acee9ef5ac5a5d5edfdde85437db7acbb
 
 redis_exporter_version: 0.15.0
 redis_exporter_checksum: 170458f8c9e1588861b1584451cfc636b1339b4cf495f82396f03e474d6e626f
 redis_addr: redis://localhost:6379
 
-postgres_exporter_version: 0.4.1
-postgres_exporter_checksum: 219c2c116cb496d54ddbd23f392a38c3496ab8e7118dfbf8b7c0b21593dedbfd
+postgres_exporter_version: 0.11.1
+postgres_exporter_checksum: ec27e2a52b764c4313076ea6db335607cc40fb8a503dcb74d9517dc8baf049f0
 postgres_exporter_connection_host: /var/run/postgresql/
 postgres_exporter_connection_ssl_mode: disable
-postgres_exporter_connection_user: prometheus
+postgres_exporter_connection_user: postgres_exporter
 postgres_exporter_connection_dbname: postgres
 
 blackbox_exporter_version: 0.11.0
