@@ -1,6 +1,7 @@
 ---
 node_exporter_version: 1.5.0
 node_exporter_checksum: af999fd31ab54ed3a34b9f0b10c28e9acee9ef5ac5a5d5edfdde85437db7acbb
+node_exporter_env_file: "node_exporter.env"
 
 redis_exporter_version: 0.15.0
 redis_exporter_checksum: 170458f8c9e1588861b1584451cfc636b1339b4cf495f82396f03e474d6e626f

@@ -6,7 +6,9 @@ After=network-online.target
 User=prometheus
 Restart=on-failure
 WorkingDirectory=/home/prometheus/node_exporter/{{ node_exporter_version }}/node_exporter
-ExecStart=/home/prometheus/node_exporter/{{ node_exporter_version }}/node_exporter/node_exporter
+EnvironmentFile=-/etc/prometheus-node-exporter
+ExecStart=/home/prometheus/node_exporter/{{ node_exporter_version }}/node_exporter/node_exporter $NODE_EXPORTER_ARGS
+ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
 WantedBy=multi-user.target

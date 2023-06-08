@@ -54,6 +54,8 @@
     dest: /home/prometheus/statsd_exporter/mapping.yml
   become: yes
   become_user: prometheus
+  notify:
+    - restart statsd_exporter
 
 - name: Template out the service file
   template:

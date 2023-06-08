@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 1.0.0
+  version: 1.1.0
 ```
 
 ## Requirements
@@ -58,6 +58,7 @@ These ports should be opened to the prometheus server based on the enabled expor
 
 - `node_exporter_version` - Which version of node exporter to download
 - `node_exporter_checksum` - The checksum for the version of node exporter
+- `node_exporter_env_file` - A file, default to empty, can be in your playbook directory, that is the env file for the exporter, used to set `NODE_EXPORTER_ARGS` for command line args or other env vars for node exporter
 - `redis_exporter_version` - Which version of redis_exporter to download
 - `redis_exporter_checksum` - The checksum for the version of redis_exporter
 - `redis_addr` - The address of the redis instance to monitor
