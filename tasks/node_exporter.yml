@@ -50,7 +50,7 @@
 
 - name: Template out the env file
   template:
-    src: {{ node_exporter_env_file }}
+    src: "{{ node_exporter_env_file }}"
     dest: /etc/prometheus-node-exporter
     mode: 0644
   become: yes
