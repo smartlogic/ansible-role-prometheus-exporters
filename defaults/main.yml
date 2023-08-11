@@ -21,5 +21,7 @@ statsd_exporter_version: 0.6.0
 statsd_exporter_checksum: 8ac4013400026ed143aaddc495d19a2d6290f45bc8fdc85ad9970d3e45adaeb2
 statsd_mapping_file: statsd_mapping.yml
 
-elasticsearch_exporter_version: 1.0.2
-elasticsearch_exporter_checksum: 9f1a35e4acf93bc073ba0106578fa9762ed09af4e89485063ca3a93a9d0201b8
+elasticsearch_exporter_version: 1.6.0
+elasticsearch_exporter_checksum: ce16d7ba4e1e87895ea5881dc6a242d9fbd9ccfd68c217248c88d8dcd519cc35
+elasticsearch_exporter_uri: http://localhost:9200
+elasticsearch_exporter_listen_addr: :9114

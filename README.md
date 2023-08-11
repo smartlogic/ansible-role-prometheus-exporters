@@ -49,7 +49,7 @@ These ports should be opened to the prometheus server based on the enabled expor
 | ------------- | ----- |
 | node          | 9100  |
 | statsd        | 9102  |
-| elasticsearch | 9108  |
+| elasticsearch | 9114  |
 | blackbox      | 9115  |
 | redis         | 9121  |
 | postgres      | 9187  |
@@ -82,6 +82,8 @@ These ports should be opened to the prometheus server based on the enabled expor
   - Default: an empty mappings file
 - `elasticsearch_exporter_version` - Which version of elasticsearch_exporter to download
 - `elasticsearch_exporter_checksum` - The checksum for the version of elasticsearch_exporter
+- `elasticsearch_exporter_listen_addr` - What interface and port to listen on, defaults to `:9114`
+- `elasticsearch_exporter_uri` - The URI of the ES node to connect to, should include `username:password@` if necessary, default is `http://localhost:9200`
 
 ## Dependencies
 

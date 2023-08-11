@@ -6,7 +6,7 @@ After=network-online.target
 User=prometheus
 Restart=on-failure
 WorkingDirectory=/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter
-ExecStart=/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter/elasticsearch_exporter -es.all
+ExecStart=/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter/elasticsearch_exporter --web.listen-address={{ elasticsearch_exporter_listen_addr }} --es.all --es.uri={{ elasticsearch_exporter_uri }}
 
 [Install]
 WantedBy=multi-user.target
