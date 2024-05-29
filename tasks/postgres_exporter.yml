@@ -3,8 +3,9 @@
     path: "/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}"
     state: directory
     mode: 0700
-  become: yes
-  become_user: prometheus
+    owner: prometheus
+    group: prometheus
+  become: true
 
 - name: "Download the postgres_exporter file"
   get_url:
@@ -12,41 +13,39 @@
     dest: "/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter.tar.gz"
     mode: 0400
     checksum: "sha256:{{ postgres_exporter_checksum }}"
-  become: yes
-  become_user: prometheus
+    owner: prometheus
+    group: prometheus
+  become: true
 
 - name: stat extracted folder
   stat: path="/home/prometheus/postgres_exporter/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter-{{ postgres_exporter_version }}.linux-amd64"
   register: postgres_exporter_extracted_folder_stat
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: stat final folder
   stat: path="/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter"
   register: postgres_exporter_folder_stat
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: "Extract archive"
   unarchive:
     src: "/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter.tar.gz"
     dest: "/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/"
     remote_src: yes
+    owner: prometheus
+    group: prometheus
   when: postgres_exporter_extracted_folder_stat.stat.exists == False and postgres_exporter_folder_stat.stat.exists == False
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: stat extracted folder
   stat: path="/home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter-{{ postgres_exporter_version }}.linux-amd64"
   register: postgres_exporter_extracted_folder_stat
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: Move extracted folder to standard path
   command: mv /home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter-{{ postgres_exporter_version }}.linux-amd64 /home/prometheus/postgres_exporter/{{ postgres_exporter_version }}/postgres_exporter
   when: postgres_exporter_extracted_folder_stat.stat.exists
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: Template out the env file
   template:
@@ -55,7 +54,7 @@
     mode: 0644
     owner: prometheus
     group: prometheus
-  become: yes
+  become: true
   notify:
     - restart postgres_exporter
 
@@ -64,7 +63,9 @@
     src: postgres_exporter.service.j2
     dest: /etc/systemd/system/postgres_exporter.service
     mode: 0644
-  become: yes
+    owner: prometheus
+    group: prometheus
+  become: true
   notify:
     - reload systemd
     - restart postgres_exporter
@@ -73,4 +74,4 @@
   systemd:
     enabled: yes
     name: postgres_exporter
-  become: yes
+  become: true
