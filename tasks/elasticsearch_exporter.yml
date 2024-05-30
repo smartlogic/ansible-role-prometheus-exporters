@@ -3,8 +3,9 @@
     path: "/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}"
     state: directory
     mode: 0700
-  become: yes
-  become_user: prometheus
+    owner: prometheus
+    group: prometheus
+  become: true
 
 - name: "Download the elasticsearch_exporter file"
   get_url:
@@ -12,48 +13,46 @@
     dest: "/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter.tar.gz"
     mode: 0400
     checksum: "sha256:{{ elasticsearch_exporter_checksum }}"
-  become: yes
-  become_user: prometheus
+    owner: prometheus
+    group: prometheus
+  become: true
 
 - name: stat extracted folder
   stat: path="/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter-{{ elasticsearch_exporter_version }}.linux-amd64"
   register: elasticsearch_exporter_extracted_folder_stat
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: stat final folder
   stat: path="/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter"
   register: elasticsearch_exporter_folder_stat
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: "Extract archive"
   unarchive:
     src: "/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter.tar.gz"
     dest: "/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/"
     remote_src: yes
+    owner: prometheus
+    group: prometheus
   when: elasticsearch_exporter_extracted_folder_stat.stat.exists == False and elasticsearch_exporter_folder_stat.stat.exists == False
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: stat extracted folder
   stat: path="/home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter-{{ elasticsearch_exporter_version }}.linux-amd64"
   register: elasticsearch_exporter_extracted_folder_stat
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: Move extracted folder to standard path
   command: mv /home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter-{{ elasticsearch_exporter_version }}.linux-amd64 /home/prometheus/elasticsearch_exporter/{{ elasticsearch_exporter_version }}/elasticsearch_exporter
   when: elasticsearch_exporter_extracted_folder_stat.stat.exists
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: Template out the service file
   template:
     src: elasticsearch_exporter.service.j2
     dest: /etc/systemd/system/elasticsearch_exporter.service
     mode: 0644
-  become: yes
+  become: true
   notify:
     - reload systemd
     - restart elasticsearch_exporter
@@ -62,4 +61,4 @@
   systemd:
     enabled: yes
     name: elasticsearch_exporter
-  become: yes
+  become: true
