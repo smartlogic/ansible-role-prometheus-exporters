@@ -13,6 +13,7 @@ postgres_exporter_connection_host: /var/run/postgresql/
 postgres_exporter_connection_ssl_mode: disable
 postgres_exporter_connection_user: postgres_exporter
 postgres_exporter_connection_dbname: postgres
+postgres_exporter_data_source_uri: ""
 
 blackbox_exporter_version: 0.11.0
 blackbox_exporter_checksum: 6731efeb27d667ff5da362cc1afbb0a983d016697d906bb4b9c5503699efcbb7

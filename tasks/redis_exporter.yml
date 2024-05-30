@@ -3,8 +3,9 @@
     path: "/home/prometheus/redis_exporter/{{ redis_exporter_version }}"
     state: directory
     mode: 0700
-  become: yes
-  become_user: prometheus
+    owner: prometheus
+    group: prometheus
+  become: true
 
 - name: "Download the redis_exporter file"
   get_url:
@@ -12,23 +13,24 @@
     dest: "/home/prometheus/redis_exporter/{{ redis_exporter_version }}/redis_exporter.tar.gz"
     mode: 0400
     checksum: "sha256:{{ redis_exporter_checksum }}"
-  become: yes
-  become_user: prometheus
+    owner: prometheus
+    group: prometheus
+  become: true
 
 - name: stat final file
   stat: path="/home/prometheus/redis_exporter/{{ redis_exporter_version }}/redis_exporter"
   register: redis_exporter_stat
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: "Extract archive"
   unarchive:
     src: "/home/prometheus/redis_exporter/{{ redis_exporter_version }}/redis_exporter.tar.gz"
     dest: "/home/prometheus/redis_exporter/{{ redis_exporter_version }}/"
     remote_src: yes
+    owner: prometheus
+    group: prometheus
   when: redis_exporter_stat.stat.exists == False
-  become: yes
-  become_user: prometheus
+  become: true
 
 - name: Template out the env file
   template:
@@ -37,7 +39,7 @@
     mode: 0644
     owner: prometheus
     group: prometheus
-  become: yes
+  become: true
   notify:
     - restart redis_exporter
 
@@ -46,7 +48,9 @@
     src: redis_exporter.service.j2
     dest: /etc/systemd/system/redis_exporter.service
     mode: 0644
-  become: yes
+    owner: prometheus
+    group: prometheus
+  become: true
   notify:
     - reload systemd
     - restart redis_exporter
@@ -55,4 +59,4 @@
   systemd:
     enabled: yes
     name: redis_exporter
-  become: yes
+  become: true
