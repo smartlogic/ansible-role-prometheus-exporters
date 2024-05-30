@@ -7,7 +7,7 @@ Set up common prometheus exporter configurations
 ```
 - src: git+git@github.com:smartlogic/ansible-role-prometheus-exporters
   name: prometheus-exporters
-  version: 1.1.0
+  version: 2.0.0
 ```
 
 ## Requirements
