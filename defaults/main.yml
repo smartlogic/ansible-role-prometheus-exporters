@@ -1,14 +1,14 @@
 ---
-node_exporter_version: 1.6.0
-node_exporter_checksum: 0b3573f8a7cb5b5f587df68eb28c3eb7c463f57d4b93e62c7586cb6dc481e515
+node_exporter_version: 1.8.1
+node_exporter_checksum: fbadb376afa7c883f87f70795700a8a200f7fd45412532cc1938a24d41078011
 node_exporter_env_file: "node_exporter.env.j2"
 
-redis_exporter_version: 0.15.0
-redis_exporter_checksum: 170458f8c9e1588861b1584451cfc636b1339b4cf495f82396f03e474d6e626f
+redis_exporter_version: 1.59.0
+redis_exporter_checksum: 7ad805a21d9423a721e6a0c48190d14b9f18a11507ee3eafbf84df11c71c3b4d
 redis_addr: redis://localhost:6379
 
-postgres_exporter_version: 0.11.1
-postgres_exporter_checksum: ec27e2a52b764c4313076ea6db335607cc40fb8a503dcb74d9517dc8baf049f0
+postgres_exporter_version: 0.15.0
+postgres_exporter_checksum: cb89fc5bf4485fb554e0d640d9684fae143a4b2d5fa443009bd29c59f9129e84
 postgres_exporter_connection_host: /var/run/postgresql/
 postgres_exporter_connection_ssl_mode: disable
 postgres_exporter_connection_user: postgres_exporter
