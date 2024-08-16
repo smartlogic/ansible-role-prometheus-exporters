@@ -39,7 +39,7 @@
 
 - name: Move extracted folder to standard path
   command: mv /home/prometheus/redis_exporter/{{ redis_exporter_version }}/redis_exporter-v{{ redis_exporter_version }}.linux-amd64/redis_exporter /home/prometheus/redis_exporter/{{ redis_exporter_version }}/redis_exporter
-  when: redis_exporter_extracted_folder_stat.stat.exists
+  when: redis_exporter_stat.stat.exists == False and redis_exporter_extracted_folder_stat.stat.exists
   become: true
 
 - name: Template out the env file
