@@ -14,8 +14,8 @@ postgres_exporter_connection_ssl_mode: disable
 postgres_exporter_connection_user: postgres_exporter
 postgres_exporter_connection_dbname: postgres
 
-blackbox_exporter_version: 0.11.0
-blackbox_exporter_checksum: 6731efeb27d667ff5da362cc1afbb0a983d016697d906bb4b9c5503699efcbb7
+blackbox_exporter_version: 0.25.0
+blackbox_exporter_checksum: c651ced6405c5e0cd292a400f47ae9b34f431f16c7bb098afbcd38f710144640
 
 statsd_exporter_version: 0.6.0
 statsd_exporter_checksum: 8ac4013400026ed143aaddc495d19a2d6290f45bc8fdc85ad9970d3e45adaeb2
