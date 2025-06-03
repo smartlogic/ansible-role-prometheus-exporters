@@ -1,27 +1,27 @@
 ---
-node_exporter_version: 1.8.1
-node_exporter_checksum: fbadb376afa7c883f87f70795700a8a200f7fd45412532cc1938a24d41078011
+node_exporter_version: 1.9.1
+node_exporter_checksum: becb950ee80daa8ae7331d77966d94a611af79ad0d3307380907e0ec08f5b4e8
 node_exporter_env_file: "node_exporter.env.j2"
 
-redis_exporter_version: 1.59.0
-redis_exporter_checksum: 7ad805a21d9423a721e6a0c48190d14b9f18a11507ee3eafbf84df11c71c3b4d
+redis_exporter_version: 1.73.0
+redis_exporter_checksum: 64a8902bf953095c5396349f289e17f7ce8f8f01e9f6859933344c260ccfd2f8
 redis_addr: redis://localhost:6379
 
-postgres_exporter_version: 0.15.0
-postgres_exporter_checksum: cb89fc5bf4485fb554e0d640d9684fae143a4b2d5fa443009bd29c59f9129e84
+postgres_exporter_version: 0.17.1
+postgres_exporter_checksum: 6da7d2edafd69ecceb08addec876786fa609849f6d5f903987c0d61c3fc89506
 postgres_exporter_connection_host: /var/run/postgresql/
 postgres_exporter_connection_ssl_mode: disable
 postgres_exporter_connection_user: postgres_exporter
 postgres_exporter_connection_dbname: postgres
 
-blackbox_exporter_version: 0.25.0
-blackbox_exporter_checksum: c651ced6405c5e0cd292a400f47ae9b34f431f16c7bb098afbcd38f710144640
+blackbox_exporter_version: 0.26.0
+blackbox_exporter_checksum: 4b1bb299c685ecff75d41e55e90aae8e02a658395fb14092c7f9c5c9d75016c7
 
-statsd_exporter_version: 0.6.0
-statsd_exporter_checksum: 8ac4013400026ed143aaddc495d19a2d6290f45bc8fdc85ad9970d3e45adaeb2
+statsd_exporter_version: 0.28.0
+statsd_exporter_checksum: 6951081e3115669e4353975f897dda1cefddef5a5d16addc908485d9be16b72b
 statsd_mapping_file: statsd_mapping.yml
 
-elasticsearch_exporter_version: 1.6.0
-elasticsearch_exporter_checksum: ce16d7ba4e1e87895ea5881dc6a242d9fbd9ccfd68c217248c88d8dcd519cc35
+elasticsearch_exporter_version: 1.9.0
+elasticsearch_exporter_checksum: 472fcafab63c5a3a2dd17d9a5e9919de4741a72e4f286c1e6252f3d99cebe425
 elasticsearch_exporter_uri: http://localhost:9200
 elasticsearch_exporter_listen_addr: :9114

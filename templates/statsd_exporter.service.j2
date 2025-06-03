@@ -6,7 +6,7 @@ After=network-online.target
 User=prometheus
 Restart=on-failure
 WorkingDirectory=/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter
-ExecStart=/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter/statsd_exporter -statsd.mapping-config /home/prometheus/statsd_exporter/mapping.yml
+ExecStart=/home/prometheus/statsd_exporter/{{ statsd_exporter_version }}/statsd_exporter/statsd_exporter --statsd.mapping-config /home/prometheus/statsd_exporter/mapping.yml
 
 [Install]
 WantedBy=multi-user.target
